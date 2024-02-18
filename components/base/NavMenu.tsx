@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/popover";
 import { MenuIcon } from "lucide-react";
 import LoginModal from "../auth/LoginModal";
+import SignupModal from "../auth/SignupModal";
 
 const NavMenu = () => {
   return (
@@ -15,9 +16,7 @@ const NavMenu = () => {
       </PopoverTrigger>
       <PopoverContent className="mr-6">
         <ul>
-          <li className="rounded-md p-2 cursor-pointer hover:bg-gray-200">
-            Sign up
-          </li>
+          <SignupModal />
           <LoginModal />
         </ul>
       </PopoverContent>
