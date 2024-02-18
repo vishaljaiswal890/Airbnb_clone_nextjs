@@ -32,9 +32,29 @@ const SignupModal = () => {
     }
   };
 
-  const onOtpSubmit = (otp: number) => {
-    
-    console.log("Login succesful", otp);
+  const onOtpSubmit = async (otp: string) => {
+    try {
+      // Make an HTTP POST request to the API route
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp }),
+      });
+
+      // Check if the request was successful
+      if (response.ok) {
+        console.log("Signup successful");
+        // Handle any further actions, such as redirecting the user
+      } else {
+        // If the response is not OK, throw an error
+        throw new Error("Failed to signup");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle the error appropriately
+    }
   };
 
   return (
@@ -99,7 +119,7 @@ const SignupModal = () => {
                     </Button>
                   </div>
                 ) : (
-                  <OTPInput email={email} length={6} onSubmit={onOtpSubmit} />
+                  <OTPInput length={6} onSubmit={onOtpSubmit} />
                 )}
               </form>
             </AlertDialogDescription>

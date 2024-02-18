@@ -5,18 +5,18 @@ import React, {
   useState,
   ChangeEvent,
   KeyboardEvent,
+  FormEvent,
 } from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 
 interface OTPInputProps {
-  email: string;
+//   email: string;
   length?: number; // Optional parameter
-  onSubmit: (otp: number) => void;
+  onSubmit: (otp: number, email:string) => void;
 }
 
 const OTPInput: React.FC<OTPInputProps> = ({
-  email,
   length = 4,
   onSubmit = () => {},
 }) => {
@@ -73,8 +73,6 @@ const OTPInput: React.FC<OTPInputProps> = ({
     }
   };
 
-  const handleOtpSubmit = () => {};
-
   return (
     <div>
       {otp.map((value: string, index: number) => (
@@ -91,9 +89,7 @@ const OTPInput: React.FC<OTPInputProps> = ({
           className="w-8 h-10 m-5 text-center text-xl border-2 border-red-300 rounded-md"
         />
       ))}
-      <Button className="bg-brand w-full" onClick={handleOtpSubmit}>
-        Submit
-      </Button>
+      {/* <Button className="bg-brand w-full">Submit</Button> */}
     </div>
   );
 };
