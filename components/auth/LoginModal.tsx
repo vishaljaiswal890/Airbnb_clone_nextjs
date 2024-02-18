@@ -14,17 +14,27 @@ import CountrySelector from "./CountrySelector";
 import { Button } from "../ui/button";
 import OTPInput from "./OTPInput"; // Import your OTPInput component
 
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
 const LoginModal = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [showOTPInput, setShowOTPInput] = useState<boolean>(false);
 
+  const [emailError, setEmailError] = useState<string>("");
+
   const handleContinue = (e: any) => {
     e.preventDefault();
-    // You can add your validation logic for email here
-    if (email) {
+    if (emailRegex.test(email)) {
+      setEmailError("");
       setShowOTPInput(true); // Show OTP input component
+    } else {
+      setEmailError("Invalid email address");
     }
+  };
+
+  const onOtpSubmit = (otp: number) => {
+    console.log("Log", otp);
   };
 
   return (
@@ -66,7 +76,7 @@ const LoginModal = () => {
                         max={10}
                         min={10}
                       />
-                      {/* You can add your email validation error message here */}
+                      <span className="text-red-400">{emailError}</span>{" "}
                     </div>
                     <div className="mt-5">
                       <Button
@@ -89,7 +99,7 @@ const LoginModal = () => {
                     </Button>
                   </div>
                 ) : (
-                  <OTPInput email={email} />
+                  <OTPInput email={email} length={6} onSubmit={onOtpSubmit} />
                 )}
               </form>
             </AlertDialogDescription>
