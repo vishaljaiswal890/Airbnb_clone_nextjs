@@ -13,6 +13,7 @@ import Image from "next/image";
 import CountrySelector from "./CountrySelector";
 import { Button } from "../ui/button";
 import OTPInput from "./OTPInput"; // Import your OTPInput component
+import { useRouter } from 'next/navigation'
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -21,6 +22,8 @@ const SignupModal = () => {
   const [email, setEmail] = useState<string>("");
   const [showOTPInput, setShowOTPInput] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string>("");
+
+  const router = useRouter();
 
   const handleContinue = (e: any) => {
     e.preventDefault();
@@ -55,6 +58,7 @@ const SignupModal = () => {
       console.error("Error:", error);
       // Handle the error appropriately
     }
+    router.refresh();
   };
 
   return (
