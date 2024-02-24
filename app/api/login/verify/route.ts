@@ -15,11 +15,7 @@ export async function POST(request: NextRequest) {
         }
         else {
             if (data.otp === body.otp) {
-                await User.create({
-                    name: body.name,
-                    email: body.email
-                })
-                return NextResponse.json({ message: 'USER REGISTERED SUCCESSFULLY' });
+                return NextResponse.json({ message: 'Verification success' });
             }
             else {
                 return NextResponse.json({ message: 'Verification failed' });
