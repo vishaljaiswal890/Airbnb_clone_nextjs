@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Otp from "@/model/otpModel";
-import User from "@/model/userModel";
-
+import jwt from "jsonwebtoken";
 
 export async function POST(request: NextRequest) {
     try {
@@ -15,7 +14,13 @@ export async function POST(request: NextRequest) {
         }
         else {
             if (data.otp === body.otp) {
-                return NextResponse.json({ message: 'Verification success' });
+                const token = jwt.sign({ email: data.email }, 'airbnb')
+                const response = NextResponse.json({ message: 'Verification success' });
+                response.cookies.set('token', token, {
+                    httpOnly: true,
+                    maxAge: 86400
+                })
+                return response;
             }
             else {
                 return NextResponse.json({ message: 'Verification failed' });

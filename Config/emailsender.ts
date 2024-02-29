@@ -2,17 +2,16 @@ import nodemailer from 'nodemailer';
 
 export async function sendOTPByEmail(generatedOTP: number, email: string) {
     var transport = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
+        host: "sandbox.smtp.mailtrap.io",
+        port: 2525,
         auth: {
-            user: "bandukr099@gmail.com",
-            pass: "obfqasxogjhryvmh"
+            user: "7b81d6ff4533ab",
+            pass: "c431e5c6d6b44c"
         }
     });
 
     const mailData = {
-        from: "bandukr099@gmail.com",
+        from: "7b81d6ff4533ab",
         to: email,
         subject: 'Your OTP verification by Airbnb',
         html: `<div>Your OTP is ${generatedOTP}</div>`,

@@ -8,7 +8,7 @@ const otpSchema: Schema = new Schema({
     otp: Number,
     createdAt: {
         type: Date,
-        expires: '3500',
+        expires: '5000',
         default: Date.now()
     }
 })
