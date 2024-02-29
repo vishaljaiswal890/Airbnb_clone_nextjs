@@ -13,6 +13,10 @@ import Image from "next/image";
 import CountrySelector from "./CountrySelector";
 import { Button } from "../ui/button";
 import OTPInput from "./OTPInput"; // Import your OTPInput component
+import { AppDispatch } from "@/app/redux/UiStore";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { login } from "@/app/redux/UiSlice";
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -22,12 +26,31 @@ const LoginModal = () => {
   const [showOTPInput, setShowOTPInput] = useState<boolean>(false);
 
   const [emailError, setEmailError] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
-  const handleContinue = (e: any) => {
+
+  const handleContinue = async (e: any) => {
     e.preventDefault();
     if (emailRegex.test(email)) {
       setEmailError("");
-      setShowOTPInput(true); // Show OTP input component
+      try {
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email}),
+        });
+        if (response.ok) {
+          setShowOTPInput(true);
+        } else {
+          throw new Error("Failed to send OTP");
+        }
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+        // Handle error appropriately, maybe show a message to the user
+      }
     } else {
       setEmailError("Invalid email address");
     }
@@ -36,7 +59,7 @@ const LoginModal = () => {
   const onOtpSubmit = async (otp: string) => {
     try {
       // Make an HTTP POST request to the API route
-      const response = await fetch("/api/login", {
+      const response = await fetch("/api/login/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,16 +69,19 @@ const LoginModal = () => {
 
       // Check if the request was successful
       if (response.ok) {
-        console.log("Login successful");
+        console.log("Signup successful");
+        dispatch(login(email));
+        // router.push("/componenets/auth/LoginModal");
         // Handle any further actions, such as redirecting the user
       } else {
         // If the response is not OK, throw an error
-        throw new Error("Failed to Login");
+        throw new Error("Failed to signup");
       }
     } catch (error) {
       console.error("Error:", error);
       // Handle the error appropriately
     }
+    router.refresh();
   };
 
   return (

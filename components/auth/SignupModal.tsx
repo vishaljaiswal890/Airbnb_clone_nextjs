@@ -36,7 +36,7 @@ const SignupModal = () => {
     if (emailRegex.test(email)) {
       setEmailError("");
       try {
-        const response = await fetch("/api/sign", {
+        const response = await fetch("/api/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -60,18 +60,18 @@ const SignupModal = () => {
   const onOtpSubmit = async (otp: string) => {
     try {
       // Make an HTTP POST request to the API route
-      const response = await fetch("/api/sign/verify", {
+      const response = await fetch("/api/signup/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, otp }),
+        body: JSON.stringify({ email, name, otp }),
       });
 
       // Check if the request was successful
       if (response.ok) {
         console.log("Signup successful");
-        dispatch(login());
+        dispatch(login(email));
         // router.push("/componenets/auth/LoginModal");
         // Handle any further actions, such as redirecting the user
       } else {

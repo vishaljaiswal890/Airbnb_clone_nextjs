@@ -5,6 +5,8 @@ import {
   createSlice,
   isRejected,
 } from "@reduxjs/toolkit";
+import { stat } from "fs";
+import Cookies from "js-cookie";
 
 type UiState = {
   email: string;
@@ -19,7 +21,7 @@ const initialState: UiState = {
   user: null as any, // Empty user :,
   isLoggedIn: false,
   isCheckingLogin: false,
-  token: "",
+  token: Cookies.get("token") || "", // Initialize token from cookies
 };
 
 const UiSlice = createSlice({
@@ -27,12 +29,22 @@ const UiSlice = createSlice({
   initialState,
   reducers: {
     login(state, action: PayloadAction<string>) {
-      state.isLoggedIn = true;
-      state.token = action.payload;
+      state.isCheckingLogin = true;
+      if (action.payload) {
+        console.log("If")
+        state.isLoggedIn = true;
+        state.isCheckingLogin = false;
+        state.token = action.payload;
+      } else {
+        console.log("else")
+        state.isLoggedIn = false;
+        state.isCheckingLogin = false;
+      }
     },
     logout(state) {
       state.isLoggedIn = false;
       state.token = "";
+      Cookies.remove("token"); // Remove token from cookies
     },
   },
 });
