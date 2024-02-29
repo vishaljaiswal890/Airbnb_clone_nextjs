@@ -9,13 +9,11 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const data = await Otp.findOne({ email: body.email });
 
-        //name ka field bana padega frontend per
-
         if (!data) {
             return NextResponse.json({ message: 'USER NOT FOUND' })
         }
         else {
-            if (data.otp === body.otp) {
+            if (data.otp == body.otp) {
                 const token = jwt.sign({ email: body.email }, 'airbnb');
                 await User.create({
                     name: body.name,

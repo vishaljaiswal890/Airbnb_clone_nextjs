@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         const isSend = await sendOTPByEmail(otp, body.email);
 
         if (isSend) {
-            return NextResponse.json({ message: 'USER LOGGED IN' });
+            return NextResponse.json({ message: 'OTP SENT SUCCESSFULLY' });
         }
         else {
             console.log('Resend the otp')

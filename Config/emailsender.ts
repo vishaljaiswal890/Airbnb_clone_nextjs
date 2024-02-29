@@ -19,7 +19,6 @@ export async function sendOTPByEmail(generatedOTP: number, email: string) {
 
     try {
         const info = await transport.sendMail(mailData);
-        console.log('Email sent:', info);
         return true;
     } catch (error) {
         console.error('Error sending email:', error);
