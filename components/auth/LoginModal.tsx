@@ -17,6 +17,7 @@ import { AppDispatch } from "@/app/redux/UiStore";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { login } from "@/app/redux/UiSlice";
+import Cookies  from 'js-cookie';
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -40,7 +41,7 @@ const LoginModal = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email}),
+          body: JSON.stringify({ email }),
         });
         if (response.ok) {
           setShowOTPInput(true);
@@ -56,7 +57,7 @@ const LoginModal = () => {
     }
   };
 
-  const onOtpSubmit = async (otp: string) => {
+  const onOtpSubmit = async (otp: any) => {
     try {
       // Make an HTTP POST request to the API route
       const response = await fetch("/api/login/verify", {
@@ -70,9 +71,7 @@ const LoginModal = () => {
       // Check if the request was successful
       if (response.ok) {
         console.log("Signup successful");
-        dispatch(login(email));
-        // router.push("/componenets/auth/LoginModal");
-        // Handle any further actions, such as redirecting the user
+        dispatch(login(Cookies.get("token")));
       } else {
         // If the response is not OK, throw an error
         throw new Error("Failed to signup");

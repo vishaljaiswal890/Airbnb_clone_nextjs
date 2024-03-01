@@ -10,21 +10,14 @@ import LoginModal from "../auth/LoginModal";
 import SignupModal from "../auth/SignupModal";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/UiStore";
-import { login } from "@/app/redux/UiSlice"; // Assuming login action is imported from your Redux slice
 import Cookies from "js-cookie";
+import Dashboard from "../auth/Dashboard";
+import Logout from "../auth/Logout";
 
 const NavMenu = () => {
   const uiRedux = useSelector((state: RootState) => state.ui);
   const dispatch = useDispatch<AppDispatch>();
 
-  // useEffect(() => {
-  //   const token = Cookies.get("token");
-  //   if (token) {
-  //     dispatch(login(token));
-  //   }
-  // }, [dispatch]);
-
-  // console.log("Nav")
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -39,9 +32,8 @@ const NavMenu = () => {
             </>
           ) : (
             <>
-              <div>
-                <h1>LoggedIn</h1>
-              </div>
+              <Dashboard />
+              <Logout />
             </>
           )}
         </ul>

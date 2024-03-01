@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
               })
               const response = NextResponse.json({ message: 'USER REGISTERED SUCCESSFULLY' });
               response.cookies.set('token', token, {
-                  httpOnly: true,
+                  httpOnly: false,
                   maxAge: 86400
               })
               return response;

@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
                 const token = jwt.sign({ email: data.email }, 'airbnb')
                 const response = NextResponse.json({ message: 'Verification success' });
                 response.cookies.set('token', token, {
-                    httpOnly: true,
+                    httpOnly: false,
                     maxAge: 86400
                 })
                 return response;

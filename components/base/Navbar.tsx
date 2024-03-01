@@ -3,6 +3,7 @@ import BrandLogo from "./BrandLogo";
 import { MenuIcon, Search } from "lucide-react";
 import NavMenu from "./NavMenu";
 import MobileNav from "./MobileNav";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -23,8 +24,8 @@ const Navbar = () => {
         </div>
         <MobileNav />
       </div>
-      <div className="hidden md:flex items-center space-x-4">
-        <span>Add your home</span>
+      <div className="hidden md:flex items-center space-x-4 cursor-pointer">
+        <Link href='/Home/AddHome'>Add your home</Link >
         <NavMenu />
       </div>
     </div>

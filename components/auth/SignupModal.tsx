@@ -50,17 +50,15 @@ const SignupModal = () => {
         }
       } catch (error) {
         console.error("Error sending OTP:", error);
-        // Handle error appropriately, maybe show a message to the user
       }
     } else {
       setEmailError("Invalid email address");
     }
   };
 
-  const onOtpSubmit = async (otp: string) => {
+  const onOtpSubmit = async (otp: any) => {
     try {
-      // Make an HTTP POST request to the API route
-      const response = await fetch("/api/signup/verify", {
+      const response: any = await fetch("/api/signup/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,19 +66,14 @@ const SignupModal = () => {
         body: JSON.stringify({ email, name, otp }),
       });
 
-      // Check if the request was successful
       if (response.ok) {
         console.log("Signup successful");
-        dispatch(login(email));
-        // router.push("/componenets/auth/LoginModal");
-        // Handle any further actions, such as redirecting the user
+        dispatch(login(response?.body?.token));
       } else {
-        // If the response is not OK, throw an error
         throw new Error("Failed to signup");
       }
     } catch (error) {
       console.error("Error:", error);
-      // Handle the error appropriately
     }
     router.refresh();
   };
