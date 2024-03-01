@@ -1,9 +1,17 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 
 const Dashboard = () => {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
     return (
         <div>
-            <button onClick={() => console.log("Dashboard clicked")}>Dashboard</button>
+            <li
+            className="rounded-md p-2 cursor-pointer hover:bg-gray-200"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Dashboard
+          </li>
         </div >
     )
 }
