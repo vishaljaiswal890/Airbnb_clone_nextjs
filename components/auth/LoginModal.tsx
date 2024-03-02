@@ -17,6 +17,8 @@ import { AppDispatch } from "@/app/redux/UiStore";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { login } from "@/app/redux/UiSlice";
+import Cookies from 'js-cookie';
+import { signIn, useSession } from "next-auth/react";
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -28,7 +30,8 @@ const LoginModal = () => {
   const [emailError, setEmailError] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-
+  // const session = useSession();
+  // console.log(session);
 
   const handleContinue = async (e: any) => {
     e.preventDefault();
@@ -40,7 +43,7 @@ const LoginModal = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email}),
+          body: JSON.stringify({ email }),
         });
         if (response.ok) {
           setShowOTPInput(true);
@@ -56,7 +59,14 @@ const LoginModal = () => {
     }
   };
 
-  const onOtpSubmit = async (otp: string) => {
+  const handleGoogleSignIn = (event: React.FormEvent<Element>) => {
+    event.preventDefault();
+    signIn("google", {
+      callbackUrl: '/'
+    });
+  };
+
+  const onOtpSubmit = async (otp: any) => {
     try {
       // Make an HTTP POST request to the API route
       const response = await fetch("/api/login/verify", {
@@ -70,9 +80,7 @@ const LoginModal = () => {
       // Check if the request was successful
       if (response.ok) {
         console.log("Signup successful");
-        dispatch(login(email));
-        // router.push("/componenets/auth/LoginModal");
-        // Handle any further actions, such as redirecting the user
+        dispatch(login(Cookies.get("token") as string));
       } else {
         // If the response is not OK, throw an error
         throw new Error("Failed to signup");
@@ -134,7 +142,7 @@ const LoginModal = () => {
                       </Button>
                     </div>
                     <h1 className="text-center mt-5 font-bold">-- OR --</h1>
-                    <Button variant="outline" className="w-full mt-2">
+                    <Button variant="outline" className="w-full mt-2" onClick={(event) => handleGoogleSignIn(event)}>
                       <Image
                         src="/images/google.png"
                         alt="logo"

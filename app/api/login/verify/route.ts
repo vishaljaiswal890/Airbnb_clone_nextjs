@@ -11,17 +11,17 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: 'USER NOT FOUND' })
         }
         else {
-            if (data.otp === body.otp) {
+            if (data.otp == body.otp) {
                 const token = jwt.sign({ email: data.email }, process.env.TOKEN_SECRET!);
                 const response = NextResponse.json({ message: 'Verification success' });
                 response.cookies.set('token', token, {
-                    httpOnly: true,
+                    httpOnly: false,
                     maxAge: 86400
                 })
                 return response;
             }
             else {
-                return NextResponse.json({ message: 'Verification failed' });
+                return NextResponse.json({ message: 'Verification failed' }, { status: 400 });
             }
         }
 

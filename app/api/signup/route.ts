@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/model/userModel";
 import Otp from "@/model/otpModel";
-import { sendOTPByEmail } from "../../../../Config/emailsender";
+import { sendOTPByEmail } from "../../../Config/emailsender";
 import { connectDB } from "@/helper/db";
 
 export async function POST(request: NextRequest) {
