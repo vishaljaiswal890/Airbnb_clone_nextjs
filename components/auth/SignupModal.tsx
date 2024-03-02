@@ -13,20 +13,45 @@ import Image from "next/image";
 import CountrySelector from "./CountrySelector";
 import { Button } from "../ui/button";
 import OTPInput from "./OTPInput"; // Import your OTPInput component
+import { useRouter } from "next/navigation";
+import { login } from "@/app/redux/UiSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/redux/UiStore";
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 const SignupModal = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [showOTPInput, setShowOTPInput] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleContinue = (e: any) => {
+  const router = useRouter();
+
+  const handleContinue = async (e: any) => {
     e.preventDefault();
     if (emailRegex.test(email)) {
       setEmailError("");
-      setShowOTPInput(true); // Show OTP input component
+      try {
+        const response = await fetch("/api/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, name }),
+        });
+        if (response.ok) {
+          setShowOTPInput(true);
+        } else {
+          throw new Error("Failed to send OTP");
+        }
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+        // Handle error appropriately, maybe show a message to the user
+      }
     } else {
       setEmailError("Invalid email address");
     }
@@ -35,17 +60,19 @@ const SignupModal = () => {
   const onOtpSubmit = async (otp: string) => {
     try {
       // Make an HTTP POST request to the API route
-      const response = await fetch("/api/signup", {
+      const response = await fetch("/api/signup/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, otp }),
+        body: JSON.stringify({ email, name, otp }),
       });
 
       // Check if the request was successful
       if (response.ok) {
         console.log("Signup successful");
+        dispatch(login(email));
+        // router.push("/componenets/auth/LoginModal");
         // Handle any further actions, such as redirecting the user
       } else {
         // If the response is not OK, throw an error
@@ -55,6 +82,7 @@ const SignupModal = () => {
       console.error("Error:", error);
       // Handle the error appropriately
     }
+    router.refresh();
   };
 
   return (
@@ -89,6 +117,15 @@ const SignupModal = () => {
                     <div className="mt-5">
                       <Input
                         className="w-full"
+                        placeholder="Enter your name"
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        max={10}
+                        min={10}
+                      />
+                      <Input
+                        className="w-full mt-2"
                         placeholder="Enter your email"
                         id="email"
                         value={email}

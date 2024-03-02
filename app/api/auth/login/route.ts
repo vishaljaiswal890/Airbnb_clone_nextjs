@@ -10,14 +10,14 @@ export async function POST(request: NextRequest) {
 
         await connectDB();
         await otpModel.create({
+            email: body.email,
             otp: otp,
-            email: body.email
         })
 
         const isSend = await sendOTPByEmail(otp, body.email);
 
         if (isSend) {
-            return NextResponse.json({ message: 'OTP SENT SUCCESSFULLY' });
+            return NextResponse.json({ message: 'OTP SEND SUCCESFULLY' });
         }
         else {
             console.log('Resend the otp')
