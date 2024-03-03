@@ -17,7 +17,8 @@ import { AppDispatch } from "@/app/redux/UiStore";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { login } from "@/app/redux/UiSlice";
-import Cookies  from 'js-cookie';
+import Cookies from "js-cookie";
+import { toast, ToastContainer } from "react-toastify";
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -25,16 +26,17 @@ const LoginModal = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [showOTPInput, setShowOTPInput] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const [emailError, setEmailError] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-
   const handleContinue = async (e: any) => {
     e.preventDefault();
     if (emailRegex.test(email)) {
       setEmailError("");
+      setIsProcessing(true);
       try {
         const response = await fetch("/api/login", {
           method: "POST",
@@ -50,7 +52,9 @@ const LoginModal = () => {
         }
       } catch (error) {
         console.error("Error sending OTP:", error);
-        // Handle error appropriately, maybe show a message to the user
+        toast.error("Failed to send OTP");
+      } finally {
+        setIsProcessing(false);
       }
     } else {
       setEmailError("Invalid email address");
@@ -59,7 +63,6 @@ const LoginModal = () => {
 
   const onOtpSubmit = async (otp: any) => {
     try {
-      // Make an HTTP POST request to the API route
       const response = await fetch("/api/login/verify", {
         method: "POST",
         headers: {
@@ -67,18 +70,16 @@ const LoginModal = () => {
         },
         body: JSON.stringify({ email, otp }),
       });
-
-      // Check if the request was successful
       if (response.ok) {
         console.log("Signup successful");
-        dispatch(login(Cookies.get("token")));
+        toast.success("Login successful");
+        dispatch(login(Cookies.get("token") as string));
       } else {
-        // If the response is not OK, throw an error
+        console.log("Error in login", response); // why error message from backend is not coming
         throw new Error("Failed to signup");
       }
-    } catch (error) {
-      console.error("Error:", error);
-      // Handle the error appropriately
+    } catch (error: any) {
+      console.error("Error:", error.message);
     }
     router.refresh();
   };
@@ -128,8 +129,29 @@ const LoginModal = () => {
                       <Button
                         className="bg-brand w-full"
                         onClick={handleContinue}
+                        disabled={isProcessing}
                       >
-                        Continue
+                        {isProcessing && (
+                          <svg
+                            className="animate-spin h-5 w-5 mr-3"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A8.004 8.004 0 014 12H0c0 6.627 5.373 12 12 12v-4c-3.313 0-6.292-1.342-8.485-3.515l1.414-1.414z"
+                            ></path>
+                          </svg>
+                        )}
+                        {isProcessing ? "Processing..." : "Continue"}
                       </Button>
                     </div>
                     <h1 className="text-center mt-5 font-bold">-- OR --</h1>
@@ -152,6 +174,7 @@ const LoginModal = () => {
           </AlertDialogHeader>
         </AlertDialogContent>
       </AlertDialog>
+      <ToastContainer />
     </>
   );
 };

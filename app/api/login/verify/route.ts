@@ -7,8 +7,6 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const data = await Otp.findOne({ email: body.email });
 
-        //name ka field bana padega frontend per
-
         if (!data) {
             return NextResponse.json({ message: 'USER NOT FOUND' })
         }
@@ -23,7 +21,7 @@ export async function POST(request: NextRequest) {
                 return response;
             }
             else {
-                return NextResponse.json({ message: 'Verification failed' });
+                return NextResponse.json({ message: 'Verification failed' },{status: 400})
             }
         }
 

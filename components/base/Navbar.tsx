@@ -9,7 +9,9 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between px-10 py-2 border-b-[1px]">
       <div className="hidden md:block">
-        <BrandLogo />
+        <a href="/">
+          <BrandLogo />
+        </a>
       </div>
       <div className="w-full md:w-auto">
         <div className=" hidden md:flex items-center space-x-2 border rounded-3xl p-2 cursor-pointer">
@@ -25,7 +27,7 @@ const Navbar = () => {
         <MobileNav />
       </div>
       <div className="hidden md:flex items-center space-x-4 cursor-pointer">
-        <Link href='/Home/AddHome'>Add your home</Link >
+        <Link href="/Home/AddHome">Add your home</Link>
         <NavMenu />
       </div>
     </div>

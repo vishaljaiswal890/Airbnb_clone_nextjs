@@ -27,6 +27,7 @@ const SignupModal = () => {
   const [showOTPInput, setShowOTPInput] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string>("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
@@ -35,6 +36,7 @@ const SignupModal = () => {
     e.preventDefault();
     if (emailRegex.test(email)) {
       setEmailError("");
+      setIsProcessing(true);
       try {
         const response = await fetch("/api/signup", {
           method: "POST",
@@ -50,6 +52,8 @@ const SignupModal = () => {
         }
       } catch (error) {
         console.error("Error sending OTP:", error);
+      } finally {
+        setIsProcessing(false);
       }
     } else {
       setEmailError("Invalid email address");
@@ -132,8 +136,29 @@ const SignupModal = () => {
                       <Button
                         className="bg-brand w-full"
                         onClick={handleContinue}
+                        disabled={isProcessing}
                       >
-                        Continue
+                        {isProcessing && (
+                          <svg
+                            className="animate-spin h-5 w-5 mr-3"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A8.004 8.004 0 014 12H0c0 6.627 5.373 12 12 12v-4c-3.313 0-6.292-1.342-8.485-3.515l1.414-1.414z"
+                            ></path>
+                          </svg>
+                        )}
+                        {isProcessing ? "Processing..." : "Continue"}
                       </Button>
                     </div>
                     <h1 className="text-center mt-5 font-bold">-- OR --</h1>
