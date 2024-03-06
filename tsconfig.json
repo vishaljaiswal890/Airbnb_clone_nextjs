@@ -35,7 +35,9 @@
     "components/auth/OTPInput.tsx",
     "components/auth/SignupModal.tsx",
     "components/auth/LoginModal.tsx",
-    "model/userModel.ts"
+    "model/userModel.ts",
+    "components/AuthProvider/AuthProvider.tsx",
+    "app/api/auth/[...nextauth]/route.js"
   ],
   "exclude": [
     "node_modules"

@@ -13,10 +13,12 @@ import { AppDispatch, RootState } from "@/app/redux/UiStore";
 import Cookies from "js-cookie";
 import Dashboard from "../auth/Dashboard";
 import Logout from "../auth/Logout";
+import { useSession } from "next-auth/react";
 
 const NavMenu = () => {
   const uiRedux = useSelector((state: RootState) => state.ui);
   const dispatch = useDispatch<AppDispatch>();
+
 
   return (
     <Popover>

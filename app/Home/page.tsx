@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 
 
 export default function Home() {
-  const [token, setToken] = useState<string>(Cookies.get("token"));
+  const [token, setToken] = useState<string>(Cookies.get("token") as string);
 
   useEffect(() => {
     try {

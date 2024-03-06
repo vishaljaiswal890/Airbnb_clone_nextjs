@@ -6,9 +6,9 @@ import Home from './Home/page'
 
 const page = () => {
     return (
-        <Provider store={makeStore}>
-            <Home />
-        </Provider>
+
+        <Home />
+
     )
 }
 

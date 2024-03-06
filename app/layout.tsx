@@ -6,6 +6,7 @@ import { makeStore } from "./redux/UiStore";
 import StoreProvider from './StoreProvider';
 import Navbar from "@/components/base/Navbar";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

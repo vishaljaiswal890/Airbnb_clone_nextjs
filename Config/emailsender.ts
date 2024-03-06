@@ -17,12 +17,12 @@ export async function sendOTPByEmail(generatedOTP: number, email: string) {
         html: `<div>Your OTP is ${generatedOTP}</div>`,
     };
 
-  try {
-    const info = await transport.sendMail(mailData);
-    console.log("Email sent:", info);
-    return true;
-  } catch (error) {
-    console.error("Error sending email:", error);
-    return false;
-  }
+    try {
+        const info = await transport.sendMail(mailData);
+        console.log("Email sent:", info);
+        return true;
+    } catch (error) {
+        console.error("Error sending email:", error);
+        return false;
+    }
 }
