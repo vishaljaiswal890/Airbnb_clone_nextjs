@@ -24,7 +24,6 @@ export async function POST(request: NextRequest) {
       } else {
         return NextResponse.json(
           { message: "Verification failed" },
-          { status: 400 },
           { status: 400 }
         );
       }

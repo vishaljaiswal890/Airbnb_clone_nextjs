@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import { login } from "@/app/redux/UiSlice";
 import Cookies from "js-cookie";
 import { signIn, useSession } from "next-auth/react";
-
+import { toast, ToastContainer } from "react-toastify";
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 const LoginModal = () => {
