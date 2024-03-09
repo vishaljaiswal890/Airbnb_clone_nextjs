@@ -5,7 +5,6 @@ import {
   createSlice,
   isRejected,
 } from "@reduxjs/toolkit";
-import { stat } from "fs";
 import Cookies from "js-cookie";
 
 type UiState = {
@@ -31,12 +30,12 @@ const UiSlice = createSlice({
     login(state, action: PayloadAction<string>) {
       state.isCheckingLogin = true;
       if (action.payload) {
-        console.log("If")
+        console.log("If");
         state.isLoggedIn = true;
         state.isCheckingLogin = false;
         state.token = action.payload;
       } else {
-        console.log("else")
+        console.log("else");
         state.isLoggedIn = false;
         state.isCheckingLogin = false;
       }

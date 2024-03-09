@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
     await connectDB();
     await Otp.create({
       email: body.email,
+      name: body.name,
       otp: otp,
     });
 

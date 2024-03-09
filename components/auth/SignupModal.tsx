@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { login } from "@/app/redux/UiSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/redux/UiStore";
+import Cookies from "js-cookie";
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -71,8 +72,15 @@ const SignupModal = () => {
       });
 
       if (response.ok) {
-        console.log("Signup successful");
-        dispatch(login(response?.body?.token));
+        const data = await response.json();
+        const token = data.token;
+        if (token) {
+          dispatch(login(token)); // Dispatching login action with token
+          Cookies.set("token", token); // Setting token in cookies
+          router.push("/Home");
+        } else {
+          throw new Error("Token not found in response");
+        }
       } else {
         throw new Error("Failed to signup");
       }
