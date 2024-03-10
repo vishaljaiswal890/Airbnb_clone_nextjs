@@ -31,8 +31,8 @@ const LoginModal = () => {
   const [emailError, setEmailError] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const session = useSession();
-  console.log(session);
+  // const session = useSession();
+  // console.log(session);
 
   const handleContinue = async (e: any) => {
     e.preventDefault();

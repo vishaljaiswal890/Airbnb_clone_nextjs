@@ -27,7 +27,7 @@ const Navbar = () => {
         <MobileNav />
       </div>
       <div className="hidden md:flex items-center space-x-4 cursor-pointer">
-        <Link href="/Home/AddHome">Add your home</Link>
+        <Link href="/Home/AddHome">Airbnb your home</Link>
         <NavMenu />
       </div>
     </div>

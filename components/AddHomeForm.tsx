@@ -10,11 +10,16 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AddHomeType, homeSchema } from "@/validations/homeSchema";
 import { Button } from "./ui/button";
+import { login } from "@/app/redux/UiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/redux/UiStore";
 
 const AddHomeForm = () => {
   const [desription, setDesription] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [homeCateogories, setHomeCateogories] = useState<string[]>([]);
+  const dispatch = useDispatch(); // Redux dispatch function
+  const isLoggedIn = useSelector((state: RootState) => state.ui.isLoggedIn); // Get login status from Redux store
 
   //Validations
   const {
@@ -39,7 +44,14 @@ const AddHomeForm = () => {
     }
   };
 
-  const onSubmit = async (payload: AddHomeType) => {};
+  const onSubmit = async (payload: AddHomeType) => {
+    if (isLoggedIn) {
+      console.log("Form Submitted", payload);
+    } else {
+      console.log("User not logged in", isLoggedIn);
+      dispatch(login());
+    }
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
