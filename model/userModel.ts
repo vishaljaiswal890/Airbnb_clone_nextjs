@@ -6,7 +6,9 @@ const userModel: Schema = new Schema({
         unique: true,
         required: true
     },
-    name: String
+    name: String,
+    image: Buffer,
+    address: String
 }, { timestamps: true });
 
 const User = mongoose.models.users || mongoose.model('users', userModel);
