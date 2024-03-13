@@ -66,7 +66,7 @@ const LoginModal = () => {
   const handleGoogleSignIn = (event: React.FormEvent<Element>) => {
     event.preventDefault();
     signIn("google", {
-      callbackUrl: "/",
+      callbackUrl: "http://localhost:3000/api/logingoogle",
     });
   };
 

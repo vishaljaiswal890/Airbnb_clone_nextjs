@@ -1,11 +1,23 @@
+"use client";
 import React from "react";
 import BrandLogo from "./BrandLogo";
 import { MenuIcon, Search } from "lucide-react";
 import NavMenu from "./NavMenu";
 import MobileNav from "./MobileNav";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/redux/UiStore";
+import { usePathname } from "next/navigation";
 
-const Navbar = () => {
+const Navbar: React.FC<any> = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+  console.log(pathname);
+
+  const uiRedux = useSelector((state: RootState) => state.ui);
+  const dispatch = useDispatch<AppDispatch>();
+
   return (
     <div className="flex items-center justify-between px-10 py-2 border-b-[1px]">
       <div className="hidden md:block">
@@ -14,7 +26,7 @@ const Navbar = () => {
         </a>
       </div>
       <div className="w-full md:w-auto">
-        <div className=" hidden md:flex items-center space-x-2 border rounded-3xl p-2 cursor-pointer">
+        <div className="hidden md:flex items-center space-x-2 border rounded-3xl p-2 cursor-pointer">
           <span className="text-sm pl-2">Anywhere</span>
           <span>|</span>
           <span className="text-sm">Any week</span>
@@ -27,7 +39,11 @@ const Navbar = () => {
         <MobileNav />
       </div>
       <div className="hidden md:flex items-center space-x-4 cursor-pointer">
-        <Link href="/Home/AddHome">Airbnb your home</Link>
+        {pathname === "/Home/AddHome" && uiRedux.isLoggedIn ? (
+          <button onClick={() => router.push("/")}>Airbnb SetUp home</button>
+        ) : (
+          <Link href="/Home/AddHome">Airbnb your home</Link>
+        )}
         <NavMenu />
       </div>
     </div>
