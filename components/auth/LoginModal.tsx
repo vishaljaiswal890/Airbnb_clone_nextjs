@@ -63,12 +63,12 @@ const LoginModal = () => {
     }
   };
 
-  const handleGoogleSignIn = (event: React.FormEvent<Element>) => {
-    event.preventDefault();
-    signIn("google", {
-      callbackUrl: "http://localhost:3000/api/logingoogle",
-    });
-  };
+  // const handleGoogleSignIn = (event: React.FormEvent<Element>) => {
+  //   event.preventDefault();
+  //   signIn("google", {
+  //     callbackUrl: "http://localhost:3000/api/logingoogle",
+  //   });
+  // };
 
   const onOtpSubmit = async (otp: any) => {
     try {
@@ -166,7 +166,7 @@ const LoginModal = () => {
                     <Button
                       variant="outline"
                       className="w-full mt-2"
-                      onClick={(event) => handleGoogleSignIn(event)}
+                      // onClick={(event) => handleGoogleSignIn(event)}
                     >
                       <Image
                         src="/images/google.png"

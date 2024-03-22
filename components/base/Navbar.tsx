@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/UiStore";
 import { usePathname } from "next/navigation";
+import { IoHomeOutline } from "react-icons/io5";
 
 const Navbar: React.FC<any> = () => {
   const pathname = usePathname();
@@ -40,7 +41,10 @@ const Navbar: React.FC<any> = () => {
       </div>
       <div className="hidden md:flex items-center space-x-4 cursor-pointer">
         {pathname === "/Home/AddHome" && uiRedux.isLoggedIn ? (
-          <button onClick={() => router.push("/")}>Airbnb SetUp home</button>
+          <button className="bg-brand text-white rounded-full p-3 flex items-center space-x-1">
+            <IoHomeOutline className="mr-2" />
+            Airbnb Setup Home
+          </button>
         ) : (
           <Link href="/Home/AddHome">Airbnb your home</Link>
         )}

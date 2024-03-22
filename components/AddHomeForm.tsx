@@ -14,12 +14,13 @@ import { login } from "@/app/redux/UiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/UiStore";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const AddHomeForm = () => {
   const [desription, setDesription] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageData, setImageData] = useState<string | null>(null);
   const [homeCateogories, setHomeCateogories] = useState<string[]>([]);
-  // const dispatch = useDispatch(); // Redux dispatch function
   const isLoggedIn = useSelector((state: RootState) => state.ui.isLoggedIn); // Get login status from Redux store
   const router = useRouter();
   const uiRedux = useSelector((state: RootState) => state.ui);
@@ -27,7 +28,7 @@ const AddHomeForm = () => {
   //Validations
   const {
     register,
-    handleSubmit,
+    getValues,
     formState: { errors },
     setValue,
   } = useForm<AddHomeType>({
@@ -37,29 +38,54 @@ const AddHomeForm = () => {
   useEffect(() => {
     setValue("categories", homeCateogories);
     setValue("description", desription);
+    if (imageData) {
+      setValue("image", imageData); // Set image data in form on update
+    }
   }, [homeCateogories, desription]);
 
   const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setImage(file);
-      setValue("image", file);
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setImageData(e.target?.result as string); // Set base64 encoded data
+      };
     }
   };
 
-  const onSubmit = async (payload: AddHomeType) => {
+  const onSubmit = async (e: any, payload: AddHomeType) => {
+    e.preventDefault();
     if (isLoggedIn) {
       console.log("Form Submitted", payload);
+      try {
+        const response = await fetch("/api/listings/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...payload, image: imageData }), // Include image data
+        });
+        if (response.ok) {
+          router.push("/");
+          toast.success("Listing created successfully");
+        } else {
+          throw new Error("Failed to create listing");
+        }
+      } catch (error) {
+        console.error("Error creating listing:", error);
+      }
     } else {
       console.log("User not logged in", isLoggedIn);
       router.push("/");
-      // dispatch(login());
     }
   };
+
   return (
     <div>
       {uiRedux.isLoggedIn ? (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={(e) => onSubmit(e, getValues())}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="mt-2">
               <Label htmlFor="title">Title</Label>
@@ -77,7 +103,7 @@ const AddHomeForm = () => {
               <select
                 id="country"
                 className="outline-brand h-10 w-full rounded-md px-3 py-2 text-sm border"
-                {...register("country")}
+                {...register("countries")}
               >
                 <option value="">--Select Country--</option>
                 {countries.map((item) => (
@@ -87,7 +113,7 @@ const AddHomeForm = () => {
                 ))}
               </select>
               <span className="text-xs text-red-500">
-                {errors?.country?.message}
+                {errors?.countries?.message}
               </span>
             </div>
             <div className="mt-2">
