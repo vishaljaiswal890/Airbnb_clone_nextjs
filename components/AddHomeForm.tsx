@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/UiStore";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 const AddHomeForm = () => {
   const [desription, setDesription] = useState<string>("");
@@ -24,6 +25,9 @@ const AddHomeForm = () => {
   const isLoggedIn = useSelector((state: RootState) => state.ui.isLoggedIn); // Get login status from Redux store
   const router = useRouter();
   const uiRedux = useSelector((state: RootState) => state.ui);
+  const dispatch = useDispatch<AppDispatch>();
+
+  
 
   //Validations
   const {
@@ -41,6 +45,12 @@ const AddHomeForm = () => {
     if (imageData) {
       setValue("image", imageData); // Set image data in form on update
     }
+    const token = Cookies.get('token');
+    if(token){
+      console.log("useEffeect")
+      console.log(token)
+      dispatch(login(token as string));
+    } 
   }, [homeCateogories, desription]);
 
   const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {

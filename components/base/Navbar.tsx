@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import BrandLogo from "./BrandLogo";
 import { MenuIcon, Search } from "lucide-react";
 import NavMenu from "./NavMenu";
@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/UiStore";
 import { usePathname } from "next/navigation";
 import { IoHomeOutline } from "react-icons/io5";
+import Cookies from "js-cookie";
+import { login } from "@/app/redux/UiSlice";
 
 const Navbar: React.FC<any> = () => {
   const pathname = usePathname();
@@ -18,6 +20,15 @@ const Navbar: React.FC<any> = () => {
 
   const uiRedux = useSelector((state: RootState) => state.ui);
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if(token){
+      console.log("useEffeect")
+      console.log(token)
+      dispatch(login(token as string));
+    } 
+  }, []);
 
   return (
     <div className="flex items-center justify-between px-10 py-2 border-b-[1px]">

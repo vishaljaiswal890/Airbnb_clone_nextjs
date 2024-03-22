@@ -1,9 +1,13 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "@/components/base/Navbar";
 import Counter from "./../../../components/common/Counter";
 import Image from "next/image";
 import AddHomeForm from "@/components/AddHomeForm";
+import Cookies from "js-cookie";
+import { login } from "@/app/redux/UiSlice";
+import { RootState, AppDispatch } from "@/app/redux/UiStore";
+import { useSelector, useDispatch } from "react-redux";
 
 const generateRandomNumber = (): number => {
   const min: number = 2000;
@@ -13,6 +17,19 @@ const generateRandomNumber = (): number => {
 };
 
 const Page: React.FC = () => {
+
+  const uiRedux = useSelector((state: RootState) => state.ui);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if(token){
+      console.log("useEffeect")
+      console.log(token)
+      dispatch(login(token as string));
+    } 
+  }, []);
+  
   return (
     <>
       <Navbar />
