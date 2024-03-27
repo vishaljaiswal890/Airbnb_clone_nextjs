@@ -11,14 +11,13 @@ import SignupModal from "../auth/SignupModal";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/UiStore";
 import Cookies from "js-cookie";
-import Dashboard from "../auth/Dashboard";
 import Logout from "../auth/Logout";
 import { useSession } from "next-auth/react";
+import Trips from "../auth/Trips";
 
 const NavMenu = () => {
   const uiRedux = useSelector((state: RootState) => state.ui);
   const dispatch = useDispatch<AppDispatch>();
-
 
   return (
     <Popover>
@@ -34,7 +33,7 @@ const NavMenu = () => {
             </>
           ) : (
             <>
-              <Dashboard />
+              <Trips />
               <Logout />
             </>
           )}

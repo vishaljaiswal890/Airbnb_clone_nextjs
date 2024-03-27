@@ -22,12 +22,12 @@ const Navbar: React.FC<any> = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const token = Cookies.get('token');
-    if(token){
-      console.log("useEffeect")
-      console.log(token)
+    const token = Cookies.get("token");
+    if (token) {
+      console.log("useEffeect");
+      console.log(token);
       dispatch(login(token as string));
-    } 
+    }
   }, []);
 
   return (
@@ -52,7 +52,7 @@ const Navbar: React.FC<any> = () => {
       </div>
       <div className="hidden md:flex items-center space-x-4 cursor-pointer">
         {pathname === "/Home/AddHome" && uiRedux.isLoggedIn ? (
-          <button className="bg-brand text-white rounded-full p-3 flex items-center space-x-1">
+          <button className="bg-brand text-white rounded-full p-3 flex items-center space-x-1 cursor-default">
             <IoHomeOutline className="mr-2" />
             Airbnb Setup Home
           </button>
