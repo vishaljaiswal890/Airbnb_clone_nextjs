@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import Logout from "../auth/Logout";
 import { useSession } from "next-auth/react";
 import Trips from "../auth/Trips";
+import Wishlist from "../auth/Wishlists";
 
 const NavMenu = () => {
   const uiRedux = useSelector((state: RootState) => state.ui);
@@ -34,6 +35,7 @@ const NavMenu = () => {
           ) : (
             <>
               <Trips />
+              <Wishlist/>
               <Logout />
             </>
           )}

@@ -1,13 +1,13 @@
 "use client";
-import router, { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const Trips = () => {
+const Wishlist = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const handleClick = () => {
     setIsModalOpen(true);
-    router.push("/Trips");
+    router.push("/wishlists");
   };
 
   return (
@@ -16,10 +16,10 @@ const Trips = () => {
         className="rounded-md p-2 cursor-pointer hover:bg-gray-200"
         onClick={handleClick}
       >
-        Trips
+        Wishlist
       </li>
     </div>
   );
 };
 
-export default Trips;
+export default Wishlist;
