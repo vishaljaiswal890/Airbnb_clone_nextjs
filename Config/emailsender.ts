@@ -1,17 +1,19 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
 export async function sendOTPByEmail(generatedOTP: number, email: string) {
   var transport = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "481c2e67629348",
-      pass: "8ea1840cd82906",
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
   const mailData = {
-    from: "481c2e67629348",
+    from: process.env.EMAIL_USER,
     to: email,
     subject: "Your OTP verification by Airbnb",
     html: `<div>Your OTP is ${generatedOTP}</div>`,
