@@ -4,9 +4,9 @@ import React from "react";
 
 function Cateogories() {
   return (
-    <div className="flex items-center space-x-8 whitespace-nowrap px-10 my-3 overflow-x-auto pb-4 ">
+    <div className="flex items-center space-x-8 whitespace-nowrap px-10 my-3 overflow-x-auto pb-4">
       {categories.map((item) => (
-        <div className="flex items-center flex-col">
+        <div className="flex items-center flex-col" key={item.name}>
           <Image src={item.icon} width={20} height={20} alt={item.name} />
           <span>{item.name}</span>
         </div>

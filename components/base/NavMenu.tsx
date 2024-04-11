@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import {
   Popover,
   PopoverContent,
@@ -7,8 +8,18 @@ import {
 import { MenuIcon } from "lucide-react";
 import LoginModal from "../auth/LoginModal";
 import SignupModal from "../auth/SignupModal";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "@/app/redux/UiStore";
+import Cookies from "js-cookie";
+import Dashboard from "../auth/Dashboard";
+import Logout from "../auth/Logout";
+import { useSession } from "next-auth/react";
 
 const NavMenu = () => {
+  const uiRedux = useSelector((state: RootState) => state.ui);
+  const dispatch = useDispatch<AppDispatch>();
+
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -16,8 +27,17 @@ const NavMenu = () => {
       </PopoverTrigger>
       <PopoverContent className="mr-6">
         <ul>
-          <SignupModal />
-          <LoginModal />
+          {!uiRedux.isLoggedIn ? (
+            <>
+              <SignupModal />
+              <LoginModal />
+            </>
+          ) : (
+            <>
+              <Dashboard />
+              <Logout />
+            </>
+          )}
         </ul>
       </PopoverContent>
     </Popover>

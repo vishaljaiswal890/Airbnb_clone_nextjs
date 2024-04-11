@@ -1,11 +1,15 @@
-import Navbar from "@/components/base/Navbar";
-import Cateogories from "@/components/common/Cateogories";
+"use client"
+import React from 'react'
+import { Provider } from 'react-redux'
+import { makeStore } from './redux/UiStore'
+import Home from './Home/page'
 
-export default function Home() {
-  return (
-    <div>
-      <Navbar />
-      <Cateogories />
-    </div>
-  );
+const page = () => {
+    return (
+
+        <Home />
+
+    )
 }
+
+export default page
